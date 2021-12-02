@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:multifuncapp/crud_ui.dart';
+import 'package:sqflite/sqflite.dart';
+import 'barcode_api.dart';
 import 'gmap_api.dart';
 import 'location_api.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 class MainScreen extends StatefulWidget {
   MainScreen({Key? key}) : super(key: key);
@@ -51,9 +55,16 @@ class _MainScreenState extends State<MainScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      String code = await BarScanApi.scanB();
+                      final snackBar = SnackBar(
+                        content: Text('Barcode: $code'),
+                        duration: const Duration(seconds: 10),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    },
                     child: const Text(
-                      'Camera',
+                      'Barcode',
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),
@@ -69,7 +80,12 @@ class _MainScreenState extends State<MainScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CrudModel()),
+                      );
+                    },
                     child: const Text(
                       'SqliteDB',
                       style: TextStyle(color: Colors.white, fontSize: 16),
