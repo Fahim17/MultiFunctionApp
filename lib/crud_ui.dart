@@ -14,7 +14,9 @@ class _CrudModelState extends State<CrudModel> {
   bool _isLoading = true;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  TextEditingController _searchController = TextEditingController();
 
+  @override
   void initState() {
     super.initState();
     _refreshJournals();
@@ -93,8 +95,10 @@ class _CrudModelState extends State<CrudModel> {
                     ElevatedButton(
                       onPressed: () async {
                         // Save new journal
-                        if (id == null) {
-                          await _addItem();
+                        if (_titleController.text.isNotEmpty) {
+                          if (id == null) {
+                            await _addItem();
+                          }
                         }
 
                         if (id != null) {
@@ -116,18 +120,89 @@ class _CrudModelState extends State<CrudModel> {
             ));
   }
 
+  void filterSeach(String query) async {
+    var dummySearchList = _journals;
+    if (query.isNotEmpty) {
+      List<Map<String, dynamic>> dummyListData = [];
+      dummySearchList.forEach((item) {
+        String title = item['title'];
+        if (title.toLowerCase().contains(query.toLowerCase())) {
+          dummyListData.add(item);
+        }
+      });
+      setState(() {
+        _journals = dummyListData;
+      });
+      return;
+    } else {
+      _refreshJournals();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Database"),
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: const Icon(Icons.search),
+        //     tooltip: 'Search',
+        //     onPressed: () {},
+        //   ),
+        // ],
       ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : ListView.builder(
+      // body: _isLoading
+      //     ? const Center(child: CircularProgressIndicator())
+      //     : ListView.builder(
+      //         itemCount: _journals.length,
+      //         itemBuilder: (context, index) => Card(
+      //           color: Colors.blueAccent,
+      //           margin: const EdgeInsets.all(15),
+      //           child: ListTile(
+      //             title: Text(_journals[index]['title']),
+      //             subtitle: Text(_journals[index]['description']),
+      //             trailing: SizedBox(
+      //                 width: 100,
+      //                 child: Row(
+      //                   children: [
+      //                     IconButton(
+      //                       icon: const Icon(Icons.edit),
+      //                       onPressed: () => _showForm(_journals[index]['id']),
+      //                     ),
+      //                     IconButton(
+      //                       icon: const Icon(Icons.delete),
+      //                       onPressed: () =>
+      //                           _deleteItem(_journals[index]['id']),
+      //                     ),
+      //                   ],
+      //                 )),
+      //           ),
+      //         ),
+      //       ),
+
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            TextField(
+              onChanged: (val) {
+                filterSeach(val);
+              },
+              controller: _searchController,
+              decoration: const InputDecoration(
+                  hintText: 'Search...',
+                  labelText: 'Search',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25)),
+                  )),
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: _journals.length,
               itemBuilder: (context, index) => Card(
-                color: Colors.greenAccent,
+                color: Colors.blueAccent,
                 margin: const EdgeInsets.all(15),
                 child: ListTile(
                   title: Text(_journals[index]['title']),
@@ -150,6 +225,9 @@ class _CrudModelState extends State<CrudModel> {
                 ),
               ),
             ),
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => _showForm(null),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:multifuncapp/crud_ui.dart';
+import 'package:multifuncapp/webview_api.dart';
 import 'package:sqflite/sqflite.dart';
 import 'barcode_api.dart';
 import 'gmap_api.dart';
@@ -32,7 +33,7 @@ class _MainScreenState extends State<MainScreen> {
                   child: ElevatedButton(
                     onPressed: () {
                       List latlng = locApi.currentlocation();
-                      print(latlng);
+                      //print(latlng);
                       if (latlng.isNotEmpty) {
                         Navigator.push(
                           context,
@@ -109,6 +110,28 @@ class _MainScreenState extends State<MainScreen> {
             ],
           ),
           //row 2 end
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => WView()),
+                      );
+                    },
+                    child: const Text(
+                      'Web View',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          //row 3 end
         ],
       ),
     );
