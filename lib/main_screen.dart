@@ -3,6 +3,7 @@ import 'package:multifuncapp/crud_ui.dart';
 import 'package:multifuncapp/webview_api.dart';
 import 'package:sqflite/sqflite.dart';
 import 'barcode_api.dart';
+import 'crud_ui_firebase.dart';
 import 'gmap_api.dart';
 import 'location_api.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -99,7 +100,12 @@ class _MainScreenState extends State<MainScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CRUDModelFB()),
+                      );
+                    },
                     child: const Text(
                       'Firebase',
                       style: TextStyle(color: Colors.white, fontSize: 16),

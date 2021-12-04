@@ -66,6 +66,7 @@ class _CrudModelState extends State<CrudModel> {
     }
 
     showModalBottomSheet(
+        isScrollControlled: true,
         context: context,
         elevation: 5,
         builder: (_) => Container(
@@ -202,7 +203,7 @@ class _CrudModelState extends State<CrudModel> {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: _journals.length,
               itemBuilder: (context, index) => Card(
-                color: Colors.blueAccent,
+                color: Colors.blueAccent[100],
                 margin: const EdgeInsets.all(15),
                 child: ListTile(
                   title: Text(_journals[index]['title']),
