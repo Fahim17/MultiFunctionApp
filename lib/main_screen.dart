@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multifuncapp/crud_ui.dart';
 import 'package:multifuncapp/notification_api.dart';
+import 'package:multifuncapp/pedometer.dart';
 import 'package:multifuncapp/webview_api.dart';
 import 'package:sqflite/sqflite.dart';
 import 'barcode_api.dart';
@@ -138,12 +139,29 @@ class _MainScreenState extends State<MainScreen> {
               ),
               Expanded(
                 child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: NotificationAPI()),
+                  padding: const EdgeInsets.all(10),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => pedo()),
+                      );
+                    },
+                    child: const Text(
+                      'Pedometer',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
           //row 3 end
+
+          Expanded(
+            child: Padding(
+                padding: const EdgeInsets.all(10), child: NotificationAPI()),
+          ),
         ],
       ),
     );
